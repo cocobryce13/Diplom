@@ -1,0 +1,60 @@
+out/
+build/
+x64/
+Debug/
+Release/
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+*.ipch
+*.iobj
+*.ipdb
+*.pdb
+*.idb
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+Makefile
+.ninja_deps
+.ninja_log
+*.exe
+*.out
+*.app
+*.ilk
+*.dll
+
+# Database files
+*.db
+*.sqlite3
+
+# Config files (except template)
+config.ini
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+EOF.vs/
