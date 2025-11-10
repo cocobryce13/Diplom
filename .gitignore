@@ -38,9 +38,6 @@ Makefile
 *.db
 *.sqlite3
 
-# Config files (except template)
-config.ini
-
 # IDE
 .idea/
 *.swp
