@@ -2,12 +2,46 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <iostream>
+#include <vector>
+#include <string>
+
+std::string find_config_file() 
+{
+    std::vector<std::string> paths = {
+        "config.ini",
+        "../config.ini",
+        "../../config.ini", 
+        "../../../config.ini",
+        "C:/C++/Diplom/config.ini"
+    };
+    
+    for (const auto& path : paths) 
+    {
+        std::ifstream file(path);
+        if (file.good()) 
+        {
+            std::cout << "Found config at: " << path << std::endl;
+            return path;
+        }
+    }
+    std::cerr << "Config file not found, using defaults" << std::endl;
+    return "config.ini";
+}
 
 Config load_config(const std::string &path) 
 {
+    std::string config_path = path.empty() ? find_config_file() : path;
     Config cfg;
-    std::ifstream in(path);
-    if(!in) return cfg;
+    std::ifstream in(config_path);
+    if(!in) 
+    {
+        std::cerr << "Cannot open config file: " << config_path << std::endl;
+        return cfg;
+    }
+    
+    std::cout << "Loading config from: " << config_path << std::endl;
+    
     std::string line, section;
     while(std::getline(in,line)) 
     {
@@ -34,17 +68,19 @@ Config load_config(const std::string &path)
         trim(key); trim(val);
         std::string full = section.empty() ? key : section + "." + key;
         cfg.values[full]=val;
+        
+        std::cout << "Config: " << full << " = " << val << std::endl;
     }
     return cfg;
 }
 
-    std::string make_conn_str(const Config& cfg) 
-    {
+std::string make_conn_str(const Config &cfg) 
+{
     std::ostringstream ss;
-    ss << "host=" << cfg.get("database.host", "127.0.0.1")
-        << " port=" << cfg.get("database.port", "5432")
-        << " dbname=" << cfg.get("database.dbname", "crawler_db")
-        << " user=" << cfg.get("database.user", "postgres")
-        << " password=" << cfg.get("database.password", "qwerty");
+    ss << "host=" << cfg.get("database.host","127.0.0.1")
+       << " port=" << cfg.get("database.port","5432")
+       << " dbname=" << cfg.get("database.dbname","crawler_db")
+       << " user=" << cfg.get("database.user","postgres")
+       << " password=" << cfg.get("database.password","qwerty");
     return ss.str();
-    }
+}
