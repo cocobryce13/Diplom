@@ -10,24 +10,14 @@ std::string clean_html(const std::string& html)
 {
     std::string text = std::regex_replace(html, std::regex("<[^>]*>"), " ");
     
-    std::string result;
-    for (char c : text) 
-    {
-        if (std::ispunct(static_cast<unsigned char>(c)) && c != '-' && c != '\'') 
-        {
-            result += ' ';
-        } 
-        else 
-        {
-            result += c;
-        }
-    }
+    // ИСПРАВЛЕНИЕ: правильное приведение типа для ispunct
+    std::replace_if(text.begin(), text.end(), [](unsigned char c){ return std::ispunct(c); }, ' ');
     
-    std::transform(result.begin(), result.end(), result.begin(), [](unsigned char c) 
-    {
-        return std::tolower(c);
-    });
-    return result;
+    // ИСПРАВЛЕНИЕ: правильный синтаксис лямбда-функции
+    std::transform(text.begin(), text.end(), text.begin(), 
+        [](unsigned char c) { return std::tolower(c); });
+    
+    return text;
 }
 
 std::map<std::string, int> count_words(const std::string& text) 
